@@ -1,8 +1,8 @@
 /**
  * @file 3-1-15.c
  * @brief Лабораторная работа 3. Задание 1 (Вариант 15).
- * 1. Табулирование функции y = cos(x) - e^(-x^2/2) + x - 1 на интервале [1; 2] с шагом 0.1.
- * 2. Дополнительная задача: нахождение суммы цифр введенного числа a (a < 1000).
+ * Табулирование функции y = cos(x) - e^(-x^2/2) + x - 1 на интервале [1; 2] с шагом 0.1.
+ * Дополнительная задача: сумма цифр числа a (a < 1000).
  */
 
 #include <stdio.h>
@@ -51,19 +51,13 @@ int main()
     const double x_end = 2.0;
     const double x_step = 0.1;
 
-    printf("--- ЧАСТЬ 1: ТАБУЛИРОВАНИЕ ФУНКЦИИ ---\n");
-    printf("Функция: y = cos(x) - e^(-x^2/2) + x - 1\n");
-    printf("Интервал: [%.1f; %.1f], шаг: %.1f\n\n", x_start, x_end, x_step);
-
+    printf("Табуляция функции y = cos(x) - e^(-x^2/2) + x - 1:\n");
     tabulate(x_start, x_end, x_step);
 
-    printf("\n--- ЧАСТЬ 2: ДОПОЛНИТЕЛЬНАЯ ЗАДАЧА ---\n");
-    printf("Определение суммы цифр числа a (a < 1000)\n");
-
+    printf("\nДополнительная задача (сумма цифр числа a < 1000):\n");
     const int a = get_digit_number();
     const int sum = get_digits_sum(a);
-
-    printf("Сумма цифр числа %d равна: %d\n", a, sum);
+    printf("Сумма цифр: %d\n", sum);
 
     return 0;
 }
@@ -76,9 +70,7 @@ double calculate_function(const double x)
 
 void tabulate(const double start, const double end, const double step)
 {
-    printf("+---------+-----------------+\n");
-    printf("|    x    |      y(x)       |\n");
-    printf("+---------+-----------------+\n");
+    printf("x\ty\n");
 
     // Цикл табуляции с шагом 0.1
     for (double x = start; x <= end + step / 2.0; x += step)
@@ -87,20 +79,19 @@ void tabulate(const double start, const double end, const double step)
         // Проверка на корректность результата
         if (isnan(y) || isinf(y))
         {
-            printf("| %7.2f | Решений нет     |\n", x);
+            printf("%.1f\tнет решений\n", x);
         }
         else
         {
-            printf("| %7.2f | %15.6f |\n", x, y);
+            printf("%.1f\t%.6f\n", x, y);
         }
     }
-    printf("+---------+-----------------+\n");
 }
 
 int get_digit_number()
 {
     int val = 0;
-    printf("Введите целое положительное число a (a < 1000): ");
+    printf("Введите число a: ");
     fflush(stdout);
 
     // Проверка ввода: число строго от 1 до 999
