@@ -61,18 +61,18 @@ double get_avg(const int a, const int b);
  */
 int main()
 {
-    // Выключение буферизации, чтобы текст не зависал в консоли CLion под шиндовс
+    // Выключение буферизации под шиндовс
     setbuf(stdout, NULL);
 
     // Ввод двух целых чисел
     const int a = get_int("Введите первое целое число (a): ");
     const int b = get_int("Введите второе целое число (b): ");
 
-    // Вывод меню операций
+    // Вывод меню операций через константы enum
     printf("\nВыберите операцию:\n");
-    printf("1 - Сумма (a + b)\n");
-    printf("2 - Разность (a - b)\n");
-    printf("3 - Среднее арифметическое ((a + b) / 2)\n");
+    printf("%d - Сумма (a + b)\n", OP_SUM);
+    printf("%d - Разность (a - b)\n", OP_DIFF);
+    printf("%d - Среднее арифметическое ((a + b) / 2)\n", OP_AVG);
 
     const enum Operation op = get_operation();
 
@@ -99,6 +99,11 @@ int main()
 
 int get_int(const char* prompt)
 {
+    if (prompt == NULL)
+    {
+        exit(1);
+    }
+
     int val = 0;
     printf("%s", prompt);
     fflush(stdout);
@@ -118,10 +123,10 @@ enum Operation get_operation()
     printf("Ваш выбор: ");
     fflush(stdout);
 
-    // Проверка выбора пункта меню (от 1 до 3)
-    if (scanf("%d", &choice) != 1 || choice < 1 || choice > 3)
+    // Проверка выбора пункта меню через границы констант enum
+    if (scanf("%d", &choice) != 1 || choice < OP_SUM || choice > OP_AVG)
     {
-        printf("Ошибка: необходимо выбрать вариант от 1 до 3.\n");
+        printf("Ошибка: необходимо выбрать вариант от %d до %d.\n", OP_SUM, OP_AVG);
         exit(1);
     }
     return (enum Operation)choice;
