@@ -7,16 +7,11 @@
  * Константа a = 2.0.
  */
 
+#define _USE_MATH_DEFINES
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
-/**
- * @brief Константа числа Пи для вычислений
- */
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
+#include <float.h>
 
 /**
  * @brief Считывание вещественного числа с клавиатуры с проверкой ввода
@@ -46,26 +41,32 @@ int main()
     const double a = 2.0;
 
     printf("Вычисление функции y(x):\n");
-    printf("  y = tg(x) + pi/3, если x > %.1f\n", a);
-    printf("  y = sin(x) * a,   если x <= %.1f\n\n", a);
+    printf("y = tg(x) + pi/3, если x > %.1f\n", a);
+    printf("y = sin(x) * a,   если x <= %.1f\n\n", a);
 
     // Запрос и ввод аргумента x
     const double x = get_double("Введите значение аргумента x: ");
 
     // Вычисление и вывод результата
     const double y = calculate_y(x, a);
-    printf("\nРезультат вычисления: y(%.4f) = %.5f\n", x, y);
+    printf("Результат: y(%.4f) = %.5f\n", x, y);
 
     return 0;
 }
 
 double get_double(const char* prompt)
 {
+    // Проверка, что указатель на строку подсказки не NULL
+    if (prompt == NULL)
+    {
+        exit(1);
+    }
+
     double val = 0.0;
     printf("%s", prompt);
     fflush(stdout);
 
-    // Проверка, что введено именно число.
+    // Проверка, что введено именно число
     if (scanf("%lf", &val) != 1)
     {
         printf("Ошибка: введено некорректное вещественное число.\n");
@@ -79,8 +80,8 @@ double calculate_y(const double x, const double a)
     // Ветка x > a
     if (x > a)
     {
-        // Проверка деления на ноль для тангенса (cos(x) ~ 0)
-        if (fabs(cos(x)) < 1e-7)
+        // Проверка деления на ноль для тангенса с использованием DBL_EPSILON
+        if (fabs(cos(x)) < DBL_EPSILON)
         {
             printf("Ошибка: тангенс не определен при данном значении x (cos(x) ~ 0).\n");
             exit(1);
