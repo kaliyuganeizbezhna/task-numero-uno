@@ -1,13 +1,20 @@
 /**
  * @file 3-1-15.c
  * @brief Лабораторная работа 3. Задание 1 (Вариант 15).
- * Табулирование функции y = cos(x) - e^(-x^2/2) + x - 1 на интервале [1; 2] с шагом 0.1.
- * Дополнительная задача: сумма цифр числа a (a < 1000).
+ * 1. Табулирование функции y = cos(x) - e^(-x^2/2) + x - 1 на интервале [x_start; x_end] с шагом dx.
+ * 2. Дополнительная задача: сумма цифр числа a (a < 1000).
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+
+/**
+ * @brief Считывание вещественного числа с клавиатуры с проверкой ввода
+ * @param prompt Текст подсказки перед вводом
+ * @return Считанное вещественное число
+ */
+double get_double(const char* prompt);
 
 /**
  * @brief Вычисление значения функции y(x) по формуле варианта
@@ -46,12 +53,25 @@ int main()
     // Выключение буферизации под шиндовс
     setbuf(stdout, NULL);
 
-    // Параметры табуляции по варианту 15
-    const double x_start = 1.0;
-    const double x_end = 2.0;
-    const double x_step = 0.1;
+    printf("Табуляция функции y = cos(x) - e^(-x^2/2) + x - 1\n");
 
-    printf("Табуляция функции y = cos(x) - e^(-x^2/2) + x - 1:\n");
+    // Ввод параметров интервала и шага пользователем
+    const double x_start = get_double("Введите начало интервала: ");
+    const double x_end = get_double("Введите конец интервала: ");
+    if (x_start >= x_end)
+    {
+        printf("Ошибка: начало интервала должно быть строго меньше конца.\n");
+        exit(1);
+    }
+
+    const double x_step = get_double("Введите шаг (dx): ");
+    if (x_step <= 0.0)
+    {
+        printf("Ошибка: шаг должен быть больше нуля.\n");
+        exit(1);
+    }
+
+    printf("\nРезультаты табуляции:\n");
     tabulate(x_start, x_end, x_step);
 
     printf("\nДополнительная задача (сумма цифр числа a < 1000):\n");
@@ -60,6 +80,27 @@ int main()
     printf("Сумма цифр: %d\n", sum);
 
     return 0;
+}
+
+double get_double(const char* prompt)
+{
+    // Проверка на непустой указатель подсказки
+    if (prompt == NULL)
+    {
+        exit(1);
+    }
+
+    double val = 0.0;
+    printf("%s", prompt);
+    fflush(stdout);
+
+    // Проверка корректности ввода вещественного числа
+    if (scanf("%lf", &val) != 1)
+    {
+        printf("Ошибка: введено некорректное вещественное число.\n");
+        exit(1);
+    }
+    return val;
 }
 
 double calculate_function(const double x)
@@ -72,18 +113,18 @@ void tabulate(const double start, const double end, const double step)
 {
     printf("x\ty\n");
 
-    // Цикл табуляции с шагом 0.1
+    // Цикл табуляции с шагом step
     for (double x = start; x <= end + step / 2.0; x += step)
     {
         const double y = calculate_function(x);
         // Проверка на корректность результата
         if (isnan(y) || isinf(y))
         {
-            printf("%.1f\tнет решений\n", x);
+            printf("%.2f\tнет решений\n", x);
         }
         else
         {
-            printf("%.1f\t%.6f\n", x, y);
+            printf("%.2f\t%.6f\n", x, y);
         }
     }
 }
