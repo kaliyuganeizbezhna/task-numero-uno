@@ -25,27 +25,20 @@ double get_double(const char* prompt);
  */
 int is_strictly_increasing(const double a, const double b, const double c);
 
-/**
- * @brief Главная функция программы
- * @return 0 при успешном завершении
- */
 int main()
 {
-    // Выключение буферизации под шиндовс для нормального вывода
     setbuf(stdout, NULL);
 
     printf("Обработка трех чисел a, b, c:\n");
     printf("Если a < b < c -> удвоение чисел.\n");
     printf("Иначе -> замена каждого числа его модулем |x|.\n\n");
 
-    // Ввод трех действительных чисел
     double a = get_double("Введите число a: ");
     double b = get_double("Введите число b: ");
     double c = get_double("Введите число c: ");
 
     printf("\nИсходные значения: a = %.4f, b = %.4f, c = %.4f\n", a, b, c);
 
-    // Проверка условия a < b < c
     if (is_strictly_increasing(a, b, c))
     {
         a *= 2.0;
@@ -59,7 +52,6 @@ int main()
         c = fabs(c);
     }
 
-    // Вывод полученных результатов
     printf("Результат: a = %.4f, b = %.4f, c = %.4f\n", a, b, c);
 
     return 0;
@@ -67,7 +59,6 @@ int main()
 
 double get_double(const char* prompt)
 {
-    // Проверка на непустой указатель подсказки
     if (prompt == NULL)
     {
         exit(1);
@@ -75,9 +66,7 @@ double get_double(const char* prompt)
 
     double val = 0.0;
     printf("%s", prompt);
-    fflush(stdout);
 
-    // Проверка, что введено вещественное число
     if (scanf("%lf", &val) != 1)
     {
         printf("Ошибка: введено некорректное вещественное число.\n");
