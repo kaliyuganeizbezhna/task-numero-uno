@@ -28,26 +28,17 @@ double get_double(const char* prompt);
  */
 double calculate_y(const double x, const double a);
 
-/**
- * @brief Главная функция программы
- * @return 0 при успешном завершении
- */
 int main()
 {
-    // Выключение буферизации под шиндовс для вывода в консоль
     setbuf(stdout, NULL);
 
-    // Константа варианта 15
     const double a = 2.0;
 
     printf("Вычисление функции y(x):\n");
     printf("y = tg(x) + pi/3, если x > %.1f\n", a);
     printf("y = sin(x) * a,   если x <= %.1f\n\n", a);
 
-    // Запрос и ввод аргумента x
     const double x = get_double("Введите значение аргумента x: ");
-
-    // Вычисление и вывод результата
     const double y = calculate_y(x, a);
     printf("Результат: y(%.4f) = %.5f\n", x, y);
 
@@ -56,7 +47,6 @@ int main()
 
 double get_double(const char* prompt)
 {
-    // Проверка, что указатель на строку подсказки не NULL
     if (prompt == NULL)
     {
         exit(1);
@@ -64,9 +54,7 @@ double get_double(const char* prompt)
 
     double val = 0.0;
     printf("%s", prompt);
-    fflush(stdout);
 
-    // Проверка, что введено именно число
     if (scanf("%lf", &val) != 1)
     {
         printf("Ошибка: введено некорректное вещественное число.\n");
@@ -77,10 +65,8 @@ double get_double(const char* prompt)
 
 double calculate_y(const double x, const double a)
 {
-    // Ветка x > a
     if (x > a)
     {
-        // Проверка деления на ноль для тангенса с использованием DBL_EPSILON
         if (fabs(cos(x)) < DBL_EPSILON)
         {
             printf("Ошибка: тангенс не определен при данном значении x (cos(x) ~ 0).\n");
