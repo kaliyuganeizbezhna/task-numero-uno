@@ -37,16 +37,10 @@ double get_series_sum(const double x, const double eps, int* terms_count);
  */
 void tabulate_comparison(const double a, const double b, const double h, const double eps);
 
-/**
- * @brief Главная функция программы
- * @return 0 при успешном завершении
- */
 int main()
 {
-    // Выключение буферизации под шиндовс
     setbuf(stdout, NULL);
 
-    // Константы интервала и точности по варианту 15
     const double a = 0.1;
     const double b = 1.0;
     const double h = 0.1;
@@ -60,7 +54,6 @@ int main()
 
 double get_exact_y(const double x)
 {
-    // В точке x = 1.0 деление на ноль
     if (fabs(1.0 - x) < DBL_EPSILON)
     {
         return NAN;
@@ -70,34 +63,27 @@ double get_exact_y(const double x)
 
 double get_series_sum(const double x, const double eps, int* terms_count)
 {
-    // Проверка указателя
     if (terms_count == NULL)
     {
         exit(1);
     }
 
-    // При x >= 1 ряд расходится (радиус R = 1)
     if (x >= 1.0 - DBL_EPSILON)
     {
         *terms_count = 0;
         return NAN;
     }
 
-    // Первый член ряда u_1 = 3 * x
     double u_n = 3.0 * x;
     double sum = 0.0;
     int n = 1;
 
-    // Накопление суммы, пока слагаемое по модулю >= eps
     while (fabs(u_n) >= eps)
     {
         sum += u_n;
         n++;
-
-        // Рекуррентный пересчет слагаемого
         u_n = u_n * ((double)(n * (n + 2))) / ((double)((n - 1) * (n + 1))) * x;
 
-        // Ограничение числа итераций от зацикливания
         if (n > 500000)
         {
             break;
