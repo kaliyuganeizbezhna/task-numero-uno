@@ -44,18 +44,12 @@ int get_digit_number();
  */
 int get_digits_sum(int n);
 
-/**
- * @brief Главная функция программы
- * @return 0 при успешном завершении
- */
 int main()
 {
-    // Выключение буферизации под шиндовс
     setbuf(stdout, NULL);
 
     printf("Табуляция функции y = cos(x) - e^(-x^2/2) + x - 1\n");
 
-    // Ввод параметров интервала и шага пользователем
     const double x_start = get_double("Введите начало интервала: ");
     const double x_end = get_double("Введите конец интервала: ");
     if (x_start >= x_end)
@@ -84,7 +78,6 @@ int main()
 
 double get_double(const char* prompt)
 {
-    // Проверка на непустой указатель подсказки
     if (prompt == NULL)
     {
         exit(1);
@@ -92,9 +85,7 @@ double get_double(const char* prompt)
 
     double val = 0.0;
     printf("%s", prompt);
-    fflush(stdout);
 
-    // Проверка корректности ввода вещественного числа
     if (scanf("%lf", &val) != 1)
     {
         printf("Ошибка: введено некорректное вещественное число.\n");
@@ -105,7 +96,6 @@ double get_double(const char* prompt)
 
 double calculate_function(const double x)
 {
-    // y = cos(x) - exp(-x^2 / 2) + x - 1
     return cos(x) - exp(-pow(x, 2.0) / 2.0) + x - 1.0;
 }
 
@@ -113,11 +103,9 @@ void tabulate(const double start, const double end, const double step)
 {
     printf("x\ty\n");
 
-    // Цикл табуляции с шагом step
     for (double x = start; x <= end + step / 2.0; x += step)
     {
         const double y = calculate_function(x);
-        // Проверка на корректность результата
         if (isnan(y) || isinf(y))
         {
             printf("%.2f\tнет решений\n", x);
@@ -133,9 +121,7 @@ int get_digit_number()
 {
     int val = 0;
     printf("Введите число a: ");
-    fflush(stdout);
 
-    // Проверка ввода: число строго от 1 до 999
     if (scanf("%d", &val) != 1 || val <= 0 || val >= 1000)
     {
         printf("Ошибка: число должно быть целым, положительным и меньше 1000.\n");
@@ -147,7 +133,6 @@ int get_digit_number()
 int get_digits_sum(int n)
 {
     int sum = 0;
-    // Последовательное отделение цифр через остаток от 10
     while (n > 0)
     {
         sum += n % 10;
