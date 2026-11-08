@@ -11,12 +11,12 @@
 /**
  * @brief Перечисление доступных математических операций
  */
-enum Operation
+typedef enum
 {
-    OP_SUM = 1,     // Сложение
-    OP_DIFF = 2,    // Вычитание
-    OP_AVG = 3      // Среднее арифметическое
-};
+    OP_SUM = 1,
+    OP_DIFF = 2,
+    OP_AVG = 3
+} Operation;
 
 /**
  * @brief Считывание целого числа с клавиатуры с проверкой ввода
@@ -29,7 +29,7 @@ int get_int(const char* prompt);
  * @brief Считывание выбора операции из меню с проверкой диапазона
  * @return Выбранный пункт операции
  */
-enum Operation get_operation();
+Operation get_operation();
 
 /**
  * @brief Вычисление суммы двух целых чисел
@@ -55,28 +55,20 @@ int get_diff(const int a, const int b);
  */
 double get_avg(const int a, const int b);
 
-/**
- * @brief Главная функция программы
- * @return 0 при успешном завершении
- */
 int main()
 {
-    // Выключение буферизации под шиндовс
     setbuf(stdout, NULL);
 
-    // Ввод двух целых чисел
     const int a = get_int("Введите первое целое число (a): ");
     const int b = get_int("Введите второе целое число (b): ");
 
-    // Вывод меню операций через константы enum
     printf("\nВыберите операцию:\n");
     printf("%d - Сумма (a + b)\n", OP_SUM);
     printf("%d - Разность (a - b)\n", OP_DIFF);
     printf("%d - Среднее арифметическое ((a + b) / 2)\n", OP_AVG);
 
-    const enum Operation op = get_operation();
+    const Operation op = get_operation();
 
-    // Вывод выбранного результата
     printf("\nРезультат:\n");
     switch (op)
     {
@@ -106,9 +98,7 @@ int get_int(const char* prompt)
 
     int val = 0;
     printf("%s", prompt);
-    fflush(stdout);
 
-    // Проверка, что введено именно целое число
     if (scanf("%d", &val) != 1)
     {
         printf("Ошибка: необходимо ввести корректное целое число.\n");
@@ -117,19 +107,17 @@ int get_int(const char* prompt)
     return val;
 }
 
-enum Operation get_operation()
+Operation get_operation()
 {
     int choice = 0;
     printf("Ваш выбор: ");
-    fflush(stdout);
 
-    // Проверка выбора пункта меню через границы констант enum
     if (scanf("%d", &choice) != 1 || choice < OP_SUM || choice > OP_AVG)
     {
         printf("Ошибка: необходимо выбрать вариант от %d до %d.\n", OP_SUM, OP_AVG);
         exit(1);
     }
-    return (enum Operation)choice;
+    return (Operation)choice;
 }
 
 int get_sum(const int a, const int b)
